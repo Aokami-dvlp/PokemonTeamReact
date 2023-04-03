@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import PokemonImg from './PokemonImg';
 import './PokemonSelect.css'
-import { Toast, ToastContainer } from 'react-bootstrap';
+import { Button, Toast, ToastContainer } from 'react-bootstrap';
+import AddRandomPokemon from './AddRandomPokemon';
 
 export interface IPokemon {
   name:string,
@@ -16,7 +17,7 @@ interface IProps {
 
 const PokemonSelect = (props:IProps) => {
  
-const [pokemon, setPokemon]= useState<string>('');
+const [pokemonProfile, setPokemonProfile]= useState<string>('');
 const [pokePic, setPokePic] = useState<IPokemon>({name:'', url:''});
 
 const [show, setShow] = useState(false);
@@ -37,7 +38,7 @@ useEffect(() => {
  }
 
  const addPokemon = () => {
-    if(pokemon !== '') {
+    if(pokePic.name && pokePic.url) {
         props.setTeam([...props.team, {name: pokePic.name.toUpperCase(), url: pokePic.url}])
         setShow(true)
     }
@@ -47,14 +48,14 @@ useEffect(() => {
    <>
    <div className="pokemon-select">
 
-    <PokemonImg value={pokemon} setPokePic={setPokePic} pokePic={pokePic}/>
+    <PokemonImg value={pokemonProfile} setPokePic={setPokePic} pokePic={pokePic}/>
 
-    <select onChange={(e) => setPokemon(e.currentTarget.value)}>
+    <select className='mt-3' onChange={(e) => setPokemonProfile(e.currentTarget.value)}>
         <option value="" disabled selected>SELECT A POKEMON</option>
         {getSelectPokemon()}
     </select>
-
-    <button className='mt-2' onClick={addPokemon}>Aggiungi alla squadra</button>
+    <AddRandomPokemon setPokePic={setPokePic}/>
+    <Button variant="primary" className='mt-2 fw-bold' onClick={addPokemon} disabled={props.team.length < 6 ? false : true}>Aggiungi alla squadra</Button>
 
     <ToastContainer className="p-3" position={"top-end"}>
         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>

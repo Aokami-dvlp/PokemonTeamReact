@@ -1,6 +1,7 @@
-import React, { useState, useEffect, SetStateAction, Dispatch } from 'react'
+import React, { useEffect, Dispatch } from 'react'
 import axios from 'axios'
 import { IPokemon } from './PokemonSelect'
+import { Card } from 'react-bootstrap'
 
 interface IProps {
     value:string,
@@ -25,9 +26,10 @@ const PokemonImg = (props:IProps) => {
 
   return (
     <>
-        <div>
-            <img src={props.pokePic.url ? props.pokePic.url : defaultImage} width={'150px'}/>
-        </div>
+    <Card style={{ width: '10rem', display: 'flex', flexDirection: 'column', alignItems:'center' }}>
+    <Card.Title className='text-center'>{props.pokePic.name ? props.pokePic.name.toUpperCase() : 'A te la scelta!'}</Card.Title>
+      <Card.Img variant="top" src={props.pokePic.url ? props.pokePic.url : defaultImage} />
+    </Card>
     </>
   )
 }
